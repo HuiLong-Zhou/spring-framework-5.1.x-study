@@ -1,6 +1,7 @@
 # Build outputs
 .gradle/
 **/.gradle/
+/spring-framework-5.1.x/demo-spring/build/
 /spring-source/target/
 /spring-app-01/target/
 /spring-app-02aop/target/
