@@ -1,0 +1,2 @@
+# 真正映射的位置在 META-INF/user.xsd
+http\://www.zhl.com/schema/user.xsd=META-INF/user.xsd

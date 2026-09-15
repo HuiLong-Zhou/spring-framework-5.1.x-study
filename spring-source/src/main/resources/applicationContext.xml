@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:zhl="http://www.zhl.com/schema/user"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                                        http://www.springframework.org/schema/mvc
+                                        https://www.springframework.org/schema/mvc/spring-mvc.xsd
+                                        http://www.zhl.com/schema/user
+                                        http://www.zhl.com/schema/user.xsd">
+
+    <!--<bean id="product"  class="com.zhl.Product">
+        <property name="name" value="zhl"/>
+        <property name="id" value="10"/>
+    </bean>-->
+
+    <bean id="userDAO" class="com.zhl.UserDAOImpl" scope="prototype"/>
+    <bean id="userService" class="com.zhl.UserServiceImpl" >
+        <property name="userDAO" ref="userDAO"/>
+    </bean>
+
+<!--    <bean id="user" class="com.zhl.User" init-method="myInit" destroy-method="myDestroy">
+        <property name="id" value="1"/>
+        <property name="name" value="zhl"/>
+    </bean>
+
+    <bean id="myBeanPostProcessor" class="com.zhl.MyBeanPostProcessor"/>-->
+
+    <!--父bean-->
+    <!--<bean id="p" abstract="true" >
+        <property name="id" value="12"/>
+    </bean>
+    &lt;!&ndash;子bean&ndash;&gt;
+    <bean id="u" class="com.zhl.User" parent="p">
+        <property name="name" value="zhangsan"/>
+        <property name="password" value="123456"/>
+    </bean>-->
+
+    <bean id="u" class="com.zhl.User" scope="prototype">
+        <property name="id" value="10"/>
+        <property name="name" value="zhangsan"/>
+        <property name="password" value="123456"/>
+    </bean>
+
+<!--    <bean id="product" class="com.zhl.Product">
+        <property name="name" value="zhl"/>
+        <property name="id" value="1"/>
+    </bean>-->
+<!--    <mvc:annotation-driven />-->
+
+    <!--设置标签 -》解析标签     user 设置name和password属性 ==> 模仿MvcNamespaceHandler -->
+    <!--<zhl:user id="u" name="zhl" password="123456"/>-->
+
+</beans>

@@ -1,0 +1,25 @@
+# Build outputs
+.gradle/
+**/.gradle/
+/spring-source/target/
+/spring-app-01/target/
+/spring-app-02aop/target/
+/spring-app-03mybatis/target/
+/spring-boot-test/target/
+/out/
+/classes/
+
+# IDE and local tooling
+.idea/
+*.iml
+*.ipr
+*.iws
+.settings/
+.classpath
+.project
+.springBeans
+
+# Logs and OS files
+*.log
+.DS_Store
+Thumbs.db

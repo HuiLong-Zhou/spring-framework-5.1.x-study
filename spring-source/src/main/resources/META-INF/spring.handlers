@@ -1,0 +1,2 @@
+# 告诉Spring解析的位置
+http\://www.zhl.com/schema/user=com.zhl.MyNamespaceHandler

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:zhl="http://www.zhl.com/schema/user"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                                        http://www.springframework.org/schema/mvc
+                                        https://www.springframework.org/schema/mvc/spring-mvc.xsd
+                                        http://www.zhl.com/schema/user
+                                        http://www.zhl.com/schema/user.xsd">
+
+    <bean id="product" class="com.zhl.Product">
+        <property name="name" value="zhangsan"/>
+        <property name="id" value="0"/>
+    </bean>
+
+</beans>
