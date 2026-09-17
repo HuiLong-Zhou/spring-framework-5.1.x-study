@@ -155,6 +155,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		Assert.notNull(singletonFactory, "Singleton factory must not be null");
 		synchronized (this.singletonObjects) {
 			if (!this.singletonObjects.containsKey(beanName)) {
+				// 在 singletonFactories(三级缓存)中添加一个 早期对象工厂，这是循环依赖能解开的另一个关键（当别的 bean 依赖当前 bean 时，从这里拿提前引用）
 				this.singletonFactories.put(beanName, singletonFactory);
 				this.earlySingletonObjects.remove(beanName);
 				this.registeredSingletons.add(beanName);
@@ -219,7 +220,6 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		synchronized (this.singletonObjects) {
 			Object singletonObject = this.singletonObjects.get(beanName);
 			if (singletonObject == null) {
-				// 如果是正在被销毁的对象
 				if (this.singletonsCurrentlyInDestruction) {
 					throw new BeanCreationNotAllowedException(beanName,
 							"Singleton bean creation not allowed while singletons of this factory are in destruction " +
@@ -228,14 +228,19 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 				if (logger.isDebugEnabled()) {
 					logger.debug("Creating shared instance of singleton bean '" + beanName + "'");
 				}
+				// 把 beanName 加入 singletonsCurrentlyInCreation 集合 =======================
+				// 这一步把 bean 标记为「正在创建中」
+				// 是后面   循环依赖检测（isSingletonCurrentlyInCreation）和提前暴露（early singleton exposure）的依据
 				beforeSingletonCreation(beanName);
+
 				boolean newSingleton = false;
 				boolean recordSuppressedExceptions = (this.suppressedExceptions == null);
 				if (recordSuppressedExceptions) {
 					this.suppressedExceptions = new LinkedHashSet<>();
 				}
 				try {
-					// 会回调 doCreateBean 方法中的 addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean)); 方法
+					// 虚方法调用，调用 生成匿名Lambda类的 getObject() 获取Bean对象实例
+					// ===》和实现 FactoryBean接口调用 getObject() 方法，作用类似
 					singletonObject = singletonFactory.getObject();
 					newSingleton = true;
 				}
@@ -259,10 +264,11 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					if (recordSuppressedExceptions) {
 						this.suppressedExceptions = null;
 					}
+					// 从 singletonsCurrentlyInCreation 移除，解除 [创建中] 标记
 					afterSingletonCreation(beanName);
 				}
 				if (newSingleton) {
-					// 添加进入单例池中(singletonObjects)
+					// 添加进入单例池中(singletonObjects) ，同时移除 singletonFactories 和 earlySingletonObjects 中的临时记录，至此这个单例 bean 才算正式完成注册
 					addSingleton(beanName, singletonObject);
 				}
 			}
