@@ -604,8 +604,16 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			/**
 			 * 解决循环引用的问题
 			 *	 addSingletonFactory 会在 singletonFactories 三级缓存中登记一个「早期对象工厂」，
-			 *	 这是循环依赖能解开的另一个关键（当别的 bean 依赖当前 bean 时，从这里拿提前引用）
+			 *	 这是循环依赖能解开的另一个关键
+			 *	 	添加的是一个惰性的 ObjectFactory (Lambda)	延迟工厂
+			 *	 		当第一次发生循环依赖时，或别的 Bean 从这里拿早期引用时 执行 getEarlyReference 方法
  			 */
+			/**
+			 * 即第一次创建 Bean 时，不执行 Lambda， singletonFactories 存放 ObjectFactory</?>，
+			 * 		在执行 singletonFactory.getObject() 时才会执行 Lambda表达式中的 getEarlyBeanReference 方法，得到早期 Bean的引用或早期AOP代理对象
+			 *			无AOP 	() -> getEarlyBeanReference(beanName, mbd, bean) 		返回 原始bean (就是传递的方法参数 bean)
+			 *			有AOP 	() -> getEarlyBeanReference(beanName, mbd, bean)  	返回 早期AOP代理对象
+			 */
 			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
 		}
 
@@ -632,6 +640,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		if (earlySingletonExposure) {
+			// 解决循环引用后，从二级缓存中取出早期引用
 			Object earlySingletonReference = getSingleton(beanName, false);
 			if (earlySingletonReference != null) {
 				if (exposedObject == bean) {
@@ -660,6 +669,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		// Register bean as disposable.
 		try {
+			// 注册实现了 DisposableBean接口 或给 Bean 添加了 <bean destroy-method= / @Bean(destroyMethod= ) 销毁方法
 			registerDisposableBeanIfNecessary(beanName, bean, mbd);
 		}
 		catch (BeanDefinitionValidationException ex) {
