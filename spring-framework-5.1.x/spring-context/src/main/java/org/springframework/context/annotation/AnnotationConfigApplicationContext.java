@@ -53,6 +53,7 @@ import org.springframework.util.Assert;
  */
 public class AnnotationConfigApplicationContext extends GenericApplicationContext implements AnnotationConfigRegistry {
 
+	/** 基于注解的配置形式 */
 	private final AnnotatedBeanDefinitionReader reader;
 
 	private final ClassPathBeanDefinitionScanner scanner;
@@ -86,7 +87,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
 		// 注册Spring 自带的Bean，比如 ConfigurationClassPostProcessor, AutowiredAnnotationBeanPostProcessor, CommonAnnotationBeanPostProcessor等
 		this();
-		// 注册自定义的 Bean
+		// 注册自定义的 Bean	AppConfig.class
 		register(componentClasses);
 		refresh();
 	}

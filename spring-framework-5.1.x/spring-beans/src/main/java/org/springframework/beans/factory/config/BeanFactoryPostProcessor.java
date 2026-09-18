@@ -46,6 +46,11 @@ import org.springframework.beans.BeansException;
 public interface BeanFactoryPostProcessor {
 
 	/**
+	 * BeanFactoryPostProcessor 可以与 bean definition 交互并对其进行修改，
+	 * 但绝不能直接操作 bean 实例。这样做可能会导致 bean 过早实例化，违反容器规则并产生意想不到的副作用。
+	 * 如果需要与 bean 实例交互，考虑实现BeanPostProcessor
+	 */
+	/**
 	 * Modify the application context's internal bean factory after its standard
 	 * initialization. All bean definitions will have been loaded, but no beans
 	 * will have been instantiated yet. This allows for overriding or adding

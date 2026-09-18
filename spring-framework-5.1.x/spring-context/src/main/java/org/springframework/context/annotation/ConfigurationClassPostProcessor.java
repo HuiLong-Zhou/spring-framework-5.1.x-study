@@ -343,6 +343,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			}
 
 			// 把在 parser.parse(candidates); 中，没有创建或注册 BD的，在此方法中执行
+			// @Import ，@PropertySource，@ImportSource，@Bean，ImportSelector，ImportBeanDefinitionRegistrars
 			this.reader.loadBeanDefinitions(configClasses);
 			alreadyParsed.addAll(configClasses);
 

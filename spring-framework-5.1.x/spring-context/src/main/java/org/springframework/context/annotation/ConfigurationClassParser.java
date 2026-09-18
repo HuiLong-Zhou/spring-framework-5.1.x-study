@@ -330,9 +330,10 @@ class ConfigurationClassParser {
 		 */
 		processImports(configClass, sourceClass, getImports(sourceClass), true);
 
-		// Process any @ImportResource annotations 	引入Spring的配置文件 @ImportResource("classpath:applicationContext.xml")
+		// Process any @ImportResource annotations
 		/**
 		 * @ImportResource
+		 * 引入Spring的配置文件 @ImportResource("classpath:applicationContext.xml")
 		 * 没有创建 BeanDefinition
 		 */
 		AnnotationAttributes importResource =
@@ -597,7 +598,7 @@ class ConfigurationClassParser {
 			this.importStack.push(configClass);
 			try {
 				for (SourceClass candidate : importCandidates) {
-					// 先解析 ImportSelector
+					// 是否实现了 ImportSelector
 					if (candidate.isAssignable(ImportSelector.class)) {
 						// Candidate class is an ImportSelector -> delegate to it to determine imports
 						// 实例化 MyImportSelector implements ImportSelector
@@ -618,7 +619,7 @@ class ConfigurationClassParser {
 							processImports(configClass, currentSourceClass, importSourceClasses, false);
 						}
 					}
-					// 再解析 ImportBeanDefinitionRegistrar
+					// 是否实现了 ImportBeanDefinitionRegistrar
 					else if (candidate.isAssignable(ImportBeanDefinitionRegistrar.class)) {
 						/**
 						 * 实现了 ImportBeanDefinitionRegistrar 与 实现 ImportSelector 的区别<p>
@@ -641,7 +642,7 @@ class ConfigurationClassParser {
 						// process it as an @Configuration class
 						/**
 						 * @Import 普通类 ==》候选类
-						 * 候选类不是 ImportSelector 或 ImportBeanDefinitionRegistrar -> 将其作为 @Configuration 类处理
+						 * 候选类未实现 ImportSelector 或 ImportBeanDefinitionRegistrar -> 将其作为 @Configuration 类处理
 						 * 没有进行任何修饰的普通类
 						 * @Import 注解处理过程中，作为 @Configuration 处理
 						 */

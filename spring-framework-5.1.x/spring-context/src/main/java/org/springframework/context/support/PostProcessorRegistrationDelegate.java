@@ -62,6 +62,7 @@ final class PostProcessorRegistrationDelegate {
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 
 			// 区分 BeanFactoryPostProcessor 和 BeanDefinitionRegistryPostProcessor
+			//  BeanDefinitionRegistryPostProcessor extends BeanFactoryPostProcessor
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
 			List<BeanDefinitionRegistryPostProcessor> registryProcessors = new ArrayList<>();
 

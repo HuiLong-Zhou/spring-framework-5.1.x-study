@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @ComponentScan("com.zhl.application")
-@Import(MyImportBeanDefinitionRegister.class)
+//@Import(MyImportBeanDefinitionRegister.class)
 //@Import(MyImportSelector.class)
 //@Import(User.class)
 public class AppConfig {

@@ -522,9 +522,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
+			/*设置了启动时间，活跃标志位，及事件相关内容*/
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.	====> DefaultListableBeanFactory
+			/*获取ApplicationContext中的核心工厂DefaultListableBeanFactory*/
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
@@ -539,12 +541,14 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// Invoke factory processors registered as beans in the context.
 				/**
 				 *  *******核心*********
+				 *  invokeBeanFactoryPostProcessors
 				 */
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
 				/**
 				 *  *******核心*********
+				 *  registerBeanPostProcessors
 				 */
 				registerBeanPostProcessors(beanFactory);
 

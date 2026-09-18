@@ -270,7 +270,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 			con = txObject.getConnectionHolder().getConnection();
 
 			// connection 是之前的隔离属性 previousIsolationLevel, spring中的Isolation设置 是当前的隔离属性 level
-			// 当Spring 和 Connection 的隔离属性不一致时，设置 previousIsolationLevel 为 Connection 的隔离属性值
+			// 当Spring 和 Connection 的隔离属性不一致时，设置当前的隔离级别为 spring 定义的隔离级别，设置 previousIsolationLevel 为 Connection 原来的隔离属性值
 			Integer previousIsolationLevel = DataSourceUtils.prepareConnectionForTransaction(con, definition);
 			txObject.setPreviousIsolationLevel(previousIsolationLevel);
 
